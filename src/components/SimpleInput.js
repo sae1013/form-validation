@@ -4,11 +4,21 @@ const SimpleInput = (props) => {
 
   const [enteredName,setEnteredName] = useState('');
   const [enteredNameTouched,setEnteredNameTouched] = useState(false);
+  const [formIsValid, setFormIsValid] = useState(false);
 
   const enteredNameIsValid = enteredName.trim() !== '';  
   const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;   
   const nameInputClasses = nameInputIsInvalid ? 'form-control invalid' : 'form-control';
-   
+  
+  useEffect(()=>{
+    if(enteredNameIsValid){
+      setFormIsValid(true);  
+    }
+    else {
+      setFormIsValid(false);
+    }
+  },[enteredNameIsValid]);
+
   const nameInputChangeHandler = e => {
     setEnteredName(e.target.value);
     setEnteredNameTouched(true);
@@ -37,7 +47,7 @@ const SimpleInput = (props) => {
       </div> 
       { nameInputIsInvalid && <p className="error-text">Name must not be empty</p>}
       <div className="form-actions">
-        <button>Submit</button>
+        <button disabled={!formIsValid}>Submit</button>
       </div>
     </form>
   );
@@ -45,7 +55,3 @@ const SimpleInput = (props) => {
 
 export default SimpleInput;
 
-// enterednameisvalid == True , enteredNameTouched가 결정자가됨.  touched가 false면 결정자는 valid]
-// touched true 결정자는 valid
-// touched false valid 에 상관없이 전체는 true 
-// 
